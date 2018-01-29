@@ -14,8 +14,16 @@ app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/:date", function (request, response) {
-  response.send(typeof request.params.date);
- typeof request.params.date  === 'string 
+  
+ typeof request.params.date  === 'string' ?
+  new Date(request.params.date).getTime() > 0 ?
+   response.send({
+        unix: (new Date(request.params.date)).getTime(),
+        natural: (new Date(request.params.date)).toLocaleTimeString("en-us", {year: "numeric", month: "long",  
+    day: "numeric",}).split(" ").slice(0, 3).join(' ').slice(0, -1)
+      }
+  ): response.send({unix: null, natural: null})
+  :
   new Date(+request.params.date).getTime() > 0 ?
       response.send({
         unix: (new Date(+request.params.date)).getTime(),
