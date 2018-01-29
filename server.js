@@ -3,6 +3,7 @@
 
 // init project
 var express = require('express');
+var path = require('path');
 var app = express();
 
 // we've started you off with Express, 
@@ -13,7 +14,8 @@ app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/:date", function (request, response) {
-  console.log(request.params); 
+  response.send(typeof request.params.date);
+ typeof request.params.date  === 'string 
   new Date(+request.params.date).getTime() > 0 ?
       response.send({
         unix: (new Date(+request.params.date)).getTime(),
@@ -22,7 +24,9 @@ app.get("/:date", function (request, response) {
       }):
       response.send({unix: null, natural: null})
 });
-
+app.get("/*", function(request, response) {
+  response.sendFile(path.join(__dirname, 'views/index.html'));
+});
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
