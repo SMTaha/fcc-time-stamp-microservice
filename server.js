@@ -14,11 +14,13 @@ app.use(express.static('public'));
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/:date", function (request, response) {
   console.log(request.params); 
-  new Date(request.params.date).getTime() > 0 ?
+  new Date(+request.params.date).getTime() > 0 ?
       response.send({
-        unix: 
+        unix: (new Date(+request.params.date)).getTime(),
+        natural: (new Date(+request.params.date)).toLocaleTimeString("en-us", {year: "numeric", month: "long",  
+    day: "numeric",}).slice(0,13)
       }):
-      response.send({})
+      response.send({unix: null, natural: null})
 });
 
 // listen for requests :)
